@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Toko Online</title>
+<style>
+    body { font-family:Poppins, sans-serif; background:#f4f4f4; padding:20px; }
+    h2 { margin-bottom:20px; }
+    form { display:flex; flex-direction:column; gap:10px; margin-bottom:30px; background:white; padding:20px; border-radius:12px; }
+    form input, form textarea { padding:8px; border-radius:6px; border:1px solid #ccc; width:100%; }
+    form button { padding:10px; border:none; border-radius:8px; background:#0077c2; color:white; cursor:pointer; }
+    form button:hover { background:#005a9e; }
+
+    table { width:100%; border-collapse:collapse; background:white; border-radius:12px; overflow:hidden; }
+    th, td { padding:10px; border:1px solid #ccc; text-align:left; }
+    th { background:#0077c2; color:white; }
+    td button { padding:5px 10px; border:none; border-radius:6px; cursor:pointer; margin-right:5px; }
+    .btn-hapus { background:#ff5722; color:white; }
+    .btn-hapus:hover { background:#e64a19; }
+    .btn-edit { background:#ffc107; color:black; }
+    .btn-edit:hover { background:#e0a800; }
+    .btn-logout { background:#777; color:white; margin-bottom:20px; }
+    .btn-logout:hover { background:#555; }
+</style>
+</head>
+<body>
+
+<button class="btn-logout" onclick="logoutAdmin()">Logout</button>
+
+<h2>Tambah Produk Baru</h2>
+<form id="produkForm">
+    <input type="text" id="namaProduk" placeholder="Nama Produk" required>
+    <input type="file" id="fileProduk" accept="image/*">
+    <textarea id="detailProduk" placeholder="Detail Produk" rows="3" required></textarea>
+    <input type="number" id="hargaProduk" placeholder="Harga Produk (Rp)" required min="0">
+    <button type="submit">Simpan Produk</button>
+</form>
+
+<h2>Daftar Produk</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Nama</th>
+            <th>Gambar</th>
+            <th>Detail</th>
+            <th>Harga</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody id="adminProdukList"></tbody>
+</table>
+
+<script>
+// Ambil produk dari LocalStorage
+function loadProduk() {
+    return JSON.parse(localStorage.getItem("produkList")) || [];
+}
+
+// Simpan produk ke LocalStorage
+function saveProduk(data) {
+    localStorage.setItem("produkList", JSON.stringify(data));
+}
+
+// Render produk ke tabel admin
+function renderAdminTable() {
+    const tbody = document.getElementById("adminProdukList");
+    const list = loadProduk();
+    tbody.innerHTML = "";
+
+    list.forEach((produk, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${produk.nama}</td>
+            <td><img src="${produk.gambar}" alt="${produk.nama}" width="80"></td>
+            <td>${produk.detail}</td>
+            <td>Rp ${Number(produk.harga).toLocaleString('id-ID')}</td>
+            <td>
+                <button class="btn-edit" onclick="editProduk(${index})">Edit</button>
+                <button class="btn-hapus" onclick="hapusProduk(${index})">Hapus</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// Tambah atau edit produk
+document.getElementById("produkForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    const nama = document.getElementById("namaProduk").value;
+    const detail = document.getElementById("detailProduk").value;
+    const harga = document.getElementById("hargaProduk").value;
+    const fileInput = document.getElementById("fileProduk");
+
+    // Jika ada file, ubah menjadi Base64
+    if(fileInput.files && fileInput.files[0]){
+        const reader = new FileReader();
+        reader.onload = function(e){
+            const gambar = e.target.result;
+            saveOrEditProduk(nama, gambar, detail, harga);
+        }
+        reader.readAsDataURL(fileInput.files[0]);
+    } else {
+        // Gunakan gambar sebelumnya jika edit atau kosong
+        const editIndex = this.dataset.editIndex;
+        const produkList = loadProduk();
+        const gambar = editIndex !== undefined ? produkList[editIndex].gambar : "";
+        saveOrEditProduk(nama, gambar, detail, harga);
+    }
+});
+
+function saveOrEditProduk(nama, gambar, detail, harga){
+    const form = document.getElementById("produkForm");
+    const produkList = loadProduk();
+    if(form.dataset.editIndex !== undefined){
+        produkList[form.dataset.editIndex] = { nama, gambar, detail, harga };
+        delete form.dataset.editIndex;
+    } else {
+        produkList.push({ nama, gambar, detail, harga });
+    }
+    saveProduk(produkList);
+    renderAdminTable();
+    form.reset();
+}
+
+// Hapus produk
+function hapusProduk(index){
+    if(confirm("Apakah yakin ingin menghapus produk ini?")){
+        const produkList = loadProduk();
+        produkList.splice(index,1);
+        saveProduk(produkList);
+        renderAdminTable();
+    }
+}
+
+// Edit produk
+function editProduk(index){
+    const produkList = loadProduk();
+    const produk = produkList[index];
+    document.getElementById("namaProduk").value = produk.nama;
+    document.getElementById("detailProduk").value = produk.detail;
+    document.getElementById("hargaProduk").value = produk.harga;
+    // Reset file input
+    document.getElementById("fileProduk").value = "";
+    // Tandai form sedang edit
+    document.getElementById("produkForm").dataset.editIndex = index;
+}
+
+// Logout admin
+function logoutAdmin(){
+    if(confirm("Apakah Anda yakin ingin logout?")){
+        window.location.href = "admin-login.html";
+    }
+}
+
+// Load tabel saat halaman pertama kali
+window.addEventListener("DOMContentLoaded", renderAdminTable);
+</script>
+
+</body>
+</html>

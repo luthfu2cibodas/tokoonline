@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detail Produk - Toko Online</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins", sans-serif; }
+    body {
+        background: url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1500&q=80') no-repeat center center;
+        background-size: cover;
+        min-height:100vh;
+        color:white;
+        overflow-x:hidden;
+    }
+
+    nav {
+        width:100%; padding:15px 30px; display:flex; justify-content:space-between; align-items:center;
+        backdrop-filter: blur(10px); background: rgba(255,255,255,0.2); border-bottom:1px solid rgba(255,255,255,0.3);
+        position:fixed; top:0; left:0; z-index:100;
+        color:white;
+    }
+    nav .brand { font-size:22px; font-weight:bold; }
+    nav ul { display:flex; list-style:none; gap:20px; }
+    nav ul li a { color:white; text-decoration:none; padding:5px 10px; border-radius:6px; transition:.3s; }
+    nav ul li a:hover { background:white; color:black; }
+
+    main { max-width:1000px; margin:120px auto 50px; padding:20px; backdrop-filter: blur(6px); background: rgba(0,0,0,0.5); border-radius:12px; }
+
+    .detail-container { display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; }
+    .detail-container img { width:100%; max-width:400px; border-radius:12px; }
+    .detail-info { flex:1; color:white; }
+    .detail-info h2 { margin-bottom:15px; font-size:32px; }
+    .detail-info p { margin-bottom:15px; font-size:18px; }
+    .detail-info #produkHarga { font-weight:bold; font-size:20px; }
+    .detail-info button { padding:12px 20px; border:none; border-radius:8px; background:#ff9800; color:white; cursor:pointer; font-size:16px; transition:.3s; }
+    .detail-info button:hover { background:#ffc31a; }
+
+    .produk-lain { margin-top:40px; }
+    .produk-lain h3 { margin-bottom:20px; }
+    .produk-container { display:flex; flex-wrap:wrap; gap:20px; }
+    .produk-card { background: rgba(255,255,255,0.9); color:#000; border-radius:12px; padding:15px; width:220px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.2); transition:transform .3s; }
+    .produk-card img { width:100%; border-radius:8px; height:150px; object-fit:cover; }
+    .produk-card h4 { margin:10px 0 5px; font-size:16px; }
+    .produk-card p { font-weight:bold; margin-bottom:10px; }
+    .produk-card button { margin-top:10px; padding:10px 15px; border:none; border-radius:8px; background:#0077c2; color:white; cursor:pointer; transition:0.3s; }
+    .produk-card button:hover { background:#005a9e; }
+
+    @media(max-width:768px){
+        .detail-container { flex-direction:column; align-items:center; }
+    }
+</style>
+</head>
+<body>
+
+<nav>
+    <div class="brand">TOKO ONLINE</div>
+    <ul>
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="produk.html">Produk</a></li>
+        <li><a href="keranjang.html">Keranjang</a></li>
+        <li><a href="kontak.html">Kontak</a></li>
+        <li><a href="admin-login.html">Admin</a></li>
+    </ul>
+</nav>
+
+<main>
+    <!-- Detail Produk -->
+    <div class="detail-container">
+        <img id="produkGambar" src="" alt="Produk">
+        <div class="detail-info">
+            <h2 id="produkNama">Nama Produk</h2>
+            <p id="produkDetail">Detail produk akan muncul di sini.</p>
+            <p id="produkHarga">Rp 0</p>
+            <button id="tambahKeranjangBtn">Tambah ke Keranjang</button>
+        </div>
+    </div>
+
+    <!-- Produk Lainnya -->
+    <div class="produk-lain">
+        <h3>Produk Lainnya</h3>
+        <div class="produk-container" id="produkLainContainer"></div>
+    </div>
+</main>
+
+<script>
+// Ambil id produk dari query parameter
+function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+
+const produkList = JSON.parse(localStorage.getItem("produkList")) || [];
+const produkId = parseInt(getQueryParam("id"));
+const produk = produkList[produkId];
+
+// Tampilkan detail produk
+if(produk){
+    document.getElementById("produkGambar").src = produk.gambar;
+    document.getElementById("produkNama").textContent = produk.nama;
+    document.getElementById("produkDetail").textContent = produk.detail;
+    document.getElementById("produkHarga").textContent = `Rp ${Number(produk.harga).toLocaleString('id-ID')}`;
+}
+
+// Tambah ke keranjang dengan harga
+document.getElementById("tambahKeranjangBtn").addEventListener("click", ()=>{
+    const cartList = JSON.parse(localStorage.getItem("cartList")) || [];
+    cartList.push({
+        nama: produk.nama,
+        gambar: produk.gambar,
+        detail: produk.detail,
+        harga: produk.harga
+    });
+    localStorage.setItem("cartList", JSON.stringify(cartList));
+    alert(`${produk.nama} berhasil ditambahkan ke keranjang!`);
+});
+
+// Tampilkan produk lain
+const produkLainContainer = document.getElementById("produkLainContainer");
+if(produkLainContainer && produkList.length > 1){
+    produkList.forEach((item,index)=>{
+        if(produk && index !== produkId){
+            const card = document.createElement("div");
+            card.classList.add("produk-card");
+            card.innerHTML = `
+                <img src="${item.gambar}" alt="${item.nama}">
+                <h4>${item.nama}</h4>
+                <p>Rp ${Number(item.harga).toLocaleString('id-ID')}</p>
+                <button onclick="window.location.href='detail.html?id=${index}'">Lihat Produk</button>
+            `;
+            produkLainContainer.appendChild(card);
+        }
+    });
+}
+</script>
+
+</body>
+</html>
