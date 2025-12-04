@@ -1,166 +1,212 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keranjang - Toko Online</title>
-<style>
-    * { margin:0; padding:0; box-sizing:border-box; font-family:"Poppins", sans-serif; }
-    body {
-        background: url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1500&q=80') no-repeat center center;
-        background-size: cover;
-        min-height:100vh;
-        overflow-x:hidden;
-        color:white;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keranjang Belanja</title>
 
-    nav {
-        width:100%; padding:15px 30px; display:flex; justify-content:space-between; align-items:center;
-        backdrop-filter: blur(10px); background: rgba(255,255,255,0.2); border-bottom:1px solid rgba(255,255,255,0.3);
-        position:fixed; top:0; left:0; z-index:100;
-        color:white;
-    }
-    nav .brand { font-size:22px; font-weight:bold; }
-    nav ul { display:flex; list-style:none; gap:20px; }
-    nav ul li a { color:white; text-decoration:none; padding:5px 10px; border-radius:6px; transition:.3s; }
-    nav ul li a:hover { background:white; color:black; }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
 
-    main { max-width:1000px; margin:120px auto 30px; padding:0 20px; backdrop-filter: blur(6px); background: rgba(0,0,0,0.5); border-radius:12px; }
+        body {
+            background: url("https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=1500&q=80")
+                     center/cover no-repeat fixed;
+            backdrop-filter: blur(3px);
+            padding-bottom: 60px;
+        }
 
-    h2 { margin-bottom:20px; color:white; }
+        header {
+            width: 100%;
+            padding: 15px 30px;
+            background: rgba(0,0,0,0.65);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-    table { width:100%; border-collapse:collapse; background: rgba(255,255,255,0.9); color:#000; border-radius:12px; overflow:hidden; }
-    th, td { padding:12px; text-align:left; border-bottom:1px solid #ccc; }
-    th { background:#0077c2; color:white; }
-    td img { width:80px; border-radius:8px; }
-    td button { padding:6px 10px; border:none; border-radius:6px; background:#ff5722; color:white; cursor:pointer; transition:.3s; }
-    td button:hover { background:#e64a19; }
+        header nav a {
+            color: white;
+            margin-left: 15px;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+        }
 
-    .total-row td { font-weight:bold; }
+        header nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
 
-    form { margin-top:30px; background: rgba(255,255,255,0.9); color:#000; padding:20px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); display:flex; flex-direction:column; gap:12px; }
-    form input, form textarea { padding:10px; border-radius:8px; border:1px solid #ccc; width:100%; }
-    form button { padding:12px; border:none; border-radius:8px; background:#0077c2; color:white; cursor:pointer; transition:.3s; font-size:16px; }
-    form button:hover { background:#005a9e; }
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: rgba(255,255,255,0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+        }
 
-    @media(max-width:768px){
-        table, thead, tbody, th, td, tr { display:block; }
-        th { display:none; }
-        td { position:relative; padding-left:50%; margin-bottom:10px; border:none; }
-        td::before { position:absolute; left:10px; font-weight:bold; content:attr(data-label); }
-    }
-</style>
+        h2 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #0077c2;
+            color: white;
+        }
+
+        .btn-hapus {
+            padding: 7px 12px;
+            background: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-hapus:hover {
+            background: #c9302c;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #bbb;
+        }
+
+        textarea {
+            height: 80px;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            padding: 12px;
+            font-size: 17px;
+            border: none;
+            border-radius: 8px;
+            background: #25D366;
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn-checkout:hover {
+            background: #1ebe5d;
+        }
+
+        .btn-back {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .btn-back:hover {
+            background: #e68a00;
+        }
+    </style>
 </head>
 <body>
 
-<nav>
-    <div class="brand">TOKO ONLINE</div>
-    <ul>
-        <li><a href="index.html">Beranda</a></li>
-        <li><a href="produk.html">Produk</a></li>
-        <li><a href="keranjang.html">Keranjang</a></li>
-        <li><a href="admin-login.html">Admin</a></li>
-    </ul>
-</nav>
+    <header>
+        <h2>Toko Online</h2>
+        <nav>
+            <a href="index.html">Beranda</a>
+            <a href="produk.html">Produk</a>
+            <a href="keranjang.html">Keranjang</a>
+        </nav>
+    </header>
 
-<main>
-    <h2>Keranjang Belanja</h2>
-    <table id="cartTable">
-        <thead>
-            <tr>
-                <th>Nama</th>
-                <th>Gambar</th>
-                <th>Detail</th>
-                <th>Harga</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-        <tfoot>
-            <tr class="total-row">
-                <td colspan="3">Total</td>
-                <td id="totalHarga">Rp 0</td>
-                <td></td>
-            </tr>
-        </tfoot>
-    </table>
+    <div class="container">
 
-    <h2>Checkout</h2>
-    <form id="checkoutForm">
-        <input type="text" id="namaPembeli" placeholder="Nama Lengkap" required>
-        <input type="text" id="alamatPembeli" placeholder="Alamat Lengkap" required>
-        <input type="tel" id="noTelpPembeli" placeholder="Nomor Telepon" required>
-        <button type="submit">Checkout via WhatsApp</button>
-    </form>
-</main>
+        <button class="btn-back" onclick="location.href='index.html'">← Kembali</button>
 
-<script>
-const cartTableBody = document.getElementById("cartTable").querySelector("tbody");
-const totalHargaEl = document.getElementById("totalHarga");
+        <h2>🛒 Keranjang Belanja</h2>
 
-function loadCart() {
-    const cartList = JSON.parse(localStorage.getItem("cartList")) || [];
-    cartTableBody.innerHTML = "";
-    let total = 0;
+        <table>
+            <thead>
+                <tr>
+                    <th>Produk</th>
+                    <th>Qty</th>
+                    <th>Harga</th>
+                    <th>Subtotal</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
 
-    cartList.forEach((item,index) => {
-        const harga = Number(item.harga);
-        total += harga;
+            <tbody id="cartList"></tbody>
+        </table>
 
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td data-label="Nama">${item.nama}</td>
-            <td data-label="Gambar"><img src="${item.gambar}" alt="${item.nama}"></td>
-            <td data-label="Detail">${item.detail}</td>
-            <td data-label="Harga">Rp ${harga.toLocaleString('id-ID')}</td>
-            <td data-label="Aksi"><button onclick="hapusItem(${index})">Hapus</button></td>
-        `;
-        cartTableBody.appendChild(row);
-    });
+        <div class="total">
+            Total: <span id="totalHarga">Rp 0</span>
+        </div>
 
-    totalHargaEl.textContent = `Rp ${total.toLocaleString('id-ID')}`;
-}
+        <h3 style="margin-top: 30px;">💬 Informasi Pembeli</h3>
 
-function hapusItem(index){
-    const cartList = JSON.parse(localStorage.getItem("cartList")) || [];
-    cartList.splice(index,1);
-    localStorage.setItem("cartList", JSON.stringify(cartList));
-    loadCart();
-}
+        <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="nama" placeholder="Masukkan Nama Anda">
+        </div>
 
-document.getElementById("checkoutForm").addEventListener("submit", function(e){
-    e.preventDefault();
-    const nama = document.getElementById("namaPembeli").value;
-    const alamat = document.getElementById("alamatPembeli").value;
-    const noTelp = document.getElementById("noTelpPembeli").value;
-    const cartList = JSON.parse(localStorage.getItem("cartList")) || [];
+        <div class="form-group">
+            <label>Alamat Lengkap</label>
+            <textarea id="alamat" placeholder="Masukkan Alamat Lengkap Anda"></textarea>
+        </div>
 
-    if(cartList.length === 0){
-        alert("Keranjang kosong!");
-        return;
-    }
+        <div class="form-group">
+            <label>Nomor Telepon / WhatsApp</label>
+            <input type="text" id="telp" placeholder="08xxxxxxxxxx">
+        </div>
 
-    let message = `Halo, saya ingin memesan produk berikut:%0A`;
-    let total = 0;
-    cartList.forEach((item,i)=>{
-        const harga = Number(item.harga);
-        total += harga;
-        message += `${i+1}. ${item.nama} - ${item.detail} - Rp ${harga.toLocaleString('id-ID')}%0A`;
-    });
-    message += `%0ATotal: Rp ${total.toLocaleString('id-ID')}%0A`;
-    message += `Nama: ${nama}%0AAlamat: ${alamat}%0ANomor Telepon: ${noTelp}`;
+        <button class="btn-checkout" onclick="checkoutWA()">
+            Checkout via WhatsApp
+        </button>
 
-    const waNumber = "6285775343266";
-    const waURL = `https://wa.me/${waNumber}?text=${message}`;
-    window.open(waURL,"_blank");
+    </div>
 
-    localStorage.removeItem("cartList");
-    loadCart();
-    this.reset();
-});
-
-window.addEventListener("DOMContentLoaded", loadCart);
-</script>
+    <script src="script.js"></script>
+    <script>
+        renderKeranjang();
+    </script>
 
 </body>
 </html>

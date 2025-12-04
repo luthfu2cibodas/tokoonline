@@ -1,295 +1,172 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Produk - Toko Online</title>
-<link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Produk - Toko Online</title>
 
-<style>
+    <style>
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
 
-    /* ========= BACKGROUND FULLSCREEN ========= */
-    body {
-        margin: 0;
-        padding: 0;
-        background: url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1500&q=80') 
-        no-repeat center center/cover;
-        min-height: 100vh;
-        font-family: Arial, sans-serif;
-    }
+        body {
+            background: linear-gradient(to bottom right, #eaf3ff, #ffffff);
+            padding-bottom: 50px;
+        }
 
-    /* Overlay Gelap */
-    .overlay {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0,0,0,0.45);
-        backdrop-filter: blur(3px);
-        z-index: -1;
-    }
+        /* NAVBAR */
+        header {
+            width: 100%;
+            background: #0077c2;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
 
-    /* ========= NAVBAR MODERN ========= */
-    .navbar-modern {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        padding: 15px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(15px);
-        border-bottom: 1px solid rgba(255,255,255,0.25);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        z-index: 999;
-    }
+        header a {
+            color: white;
+            margin-left: 16px;
+            text-decoration: none;
+            font-weight: 500;
+        }
 
-    .nav-logo {
-        font-size: 1.7em;
-        font-weight: bold;
-        color: #ffffff;
-        letter-spacing: 2px;
-        text-shadow: 0 0 8px rgba(255,255,255,0.5);
-    }
+        /* GRID PRODUK */
+        .container {
+            width: 90%;
+            margin: auto;
+            margin-top: 30px;
+        }
 
-    .nav-menu {
-        list-style: none;
-        display: flex;
-        gap: 28px;
-    }
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
 
-    .nav-menu li a {
-        color: white;
-        text-decoration: none;
-        font-size: 1.05em;
-        padding: 8px 14px;
-        border-radius: 8px;
-        transition: .3s ease;
-        position: relative;
-    }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
 
-    .nav-menu li a:hover {
-        background: rgba(255,152,0,0.28);
-        box-shadow: 0 0 15px rgba(255,152,0,0.6);
-        transform: translateY(-2px);
-    }
+        .card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: 0.3s;
+        }
 
-    .nav-menu li a::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: -4px;
-        width: 0%;
-        height: 2px;
-        background: #ff9800;
-        transition: .3s ease;
-    }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
 
-    .nav-menu li a:hover::after {
-        width: 100%;
-    }
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
 
-    /* ========= JUDUL ========= */
-    .page-title {
-        margin-top: 120px;
-        text-align: center;
-        color: #fff;
-        font-size: 2.6em;
-        text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-    }
+        .card h3 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
 
-    /* ========= PRODUK GRID ========= */
-    .produk-container {
-        padding: 40px 30px 80px;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 25px;
-    }
+        .price {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #0077c2;
+        }
 
-    /* Kartu Produk Glassmorphism */
-    .produk-card {
-        background: rgba(255,255,255,0.18);
-        border-radius: 15px;
-        padding: 15px;
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255,255,255,0.3);
-        color: #fff;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-        transition: .3s ease;
-    }
+        .btn {
+            width: 100%;
+            background: #0077c2;
+            border: none;
+            padding: 10px 0;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: 0.3s;
+        }
 
-    .produk-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 12px 30px rgba(0,0,0,0.55);
-    }
+        .btn:hover {
+            background: #005a97;
+        }
 
-    .produk-card img {
-        width: 100%;
-        height: 170px;
-        object-fit: cover;
-        border-radius: 12px;
-    }
+        .btn-detail {
+            background: #ff9800;
+        }
 
-    .produk-card h3 {
-        margin: 10px 0 5px;
-        font-size: 1.2em;
-    }
-
-    .produk-card p {
-        opacity: .9;
-    }
-
-    .btn-produk {
-        display: block;
-        text-align: center;
-        margin-top: 10px;
-        padding: 10px;
-        background: #ff9800;
-        color: white;
-        border-radius: 10px;
-        text-decoration: none;
-        font-weight: bold;
-        transition: .3s;
-    }
-
-    .btn-produk:hover {
-        background: #e38800;
-    }
-
-    /* ========= POPUP ========= */
-    .popup {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0,0,0,0.6);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        opacity: 0;
-        pointer-events: none;
-        transition: .3s ease;
-    }
-
-    .popup.show {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .popup-content {
-        background: white;
-        padding: 25px;
-        border-radius: 15px;
-        text-align: center;
-        width: 300px;
-        animation: pop .35s ease;
-    }
-
-    @keyframes pop {
-        from { transform: scale(.5); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
-    }
-
-    .popup-btn {
-        margin-top: 15px;
-        padding: 10px 20px;
-        background: #0077c2;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-
-</style>
-
+        .btn-detail:hover {
+            background: #e68900;
+        }
+    </style>
 </head>
-<body>
 
-<div class="overlay"></div>
+<body onload="renderProdukFull()">
 
-<!-- NAVBAR -->
-<nav class="navbar-modern">
-    <div class="nav-logo">TOKO ONLINE</div>
-    <ul class="nav-menu">
-        <li><a href="index.html">Beranda</a></li>
-        <li><a href="produk.html">Produk</a></li>
-        <li><a href="keranjang.html">Keranjang</a></li>
-        <li><a href="admin-login.html">Admin</a></li>
-    </ul>
-</nav>
+    <!-- NAVBAR -->
+    <header>
+        <div style="font-size: 20px; font-weight: bold;">Toko Online</div>
+        <nav>
+            <a href="index.html">Beranda</a>
+            <a href="produk.html">Produk</a>
+            <a href="keranjang.html">Keranjang</a>
+            <a href="admin-login.html">Admin</a>
+        </nav>
+    </header>
 
-<h2 class="page-title">Daftar Produk</h2>
+    <!-- DAFTAR PRODUK -->
+    <div class="container">
+        <h1>Daftar Produk</h1>
 
-<!-- PRODUK LIST -->
-<div id="produkList" class="produk-container"></div>
-
-<!-- POPUP -->
-<div id="popup" class="popup">
-    <div class="popup-content">
-        <h3 id="popup-title">Berhasil!</h3>
-        <p id="popup-message">Produk ditambahkan ke keranjang.</p>
-        <button onclick="closePopup()" class="popup-btn">Tutup</button>
+        <div id="productList" class="grid"></div>
     </div>
-</div>
 
-<script src="js/script.js"></script>
+    <script src="script.js"></script>
 
-<script>
-/* ===== LOAD PRODUK DARI LOCAL STORAGE ===== */
-const produkList = JSON.parse(localStorage.getItem("produkList")) || [];
-const list = document.getElementById("produkList");
+    <script>
+        // Versi khusus untuk halaman produk 
+        // ditambahkan tombol DETAIL
+        function renderProdukFull() {
+            const box = document.getElementById("productList");
+            const produk = loadProduk();
+            box.innerHTML = "";
 
-function renderProduk() {
-    list.innerHTML = "";
-    produkList.forEach((p, i) => {
-        list.innerHTML += `
-            <div class="produk-card">
-                <img src="${p.gambar}">
-                <h3>${p.nama}</h3>
-                <p>Rp ${Number(p.harga).toLocaleString('id-ID')}</p>
+            produk.forEach((p) => {
+                box.innerHTML += `
+                    <div class="card">
+                        <img src="${p.img}">
+                        <h3>${p.nama}</h3>
+                        <div class="price">Rp ${p.harga.toLocaleString()}</div>
 
-                <a href="detail.html?id=${i}" class="btn-produk">Detail Produk</a>
+                        <button class="btn-detail btn" onclick="viewDetail(${p.id})">
+                            Detail
+                        </button>
 
-                <button class="btn-produk" 
-                    style="background:#2196F3;" 
-                    onclick="tambahKeranjang(${i})">
-                    Tambah Ke Keranjang
-                </button>
-            </div>
-        `;
-    });
-}
+                        <button class="btn" onclick="addToCart(${p.id})">
+                            Tambah ke Keranjang
+                        </button>
+                    </div>
+                `;
+            });
+        }
 
-renderProduk();
-
-/* ===== TAMBAH KE KERANJANG ===== */
-function tambahKeranjang(index) {
-    const produk = produkList[index];
-    const cartList = JSON.parse(localStorage.getItem("cartList")) || [];
-
-    // Simpan produk beserta harga ke cart
-    cartList.push({
-        nama: produk.nama,
-        gambar: produk.gambar,
-        detail: produk.detail,
-        harga: produk.harga
-    });
-
-    localStorage.setItem("cartList", JSON.stringify(cartList));
-
-    // Tampilkan popup
-    document.getElementById("popup").classList.add("show");
-}
-
-/* ===== POPUP ===== */
-function closePopup() {
-    document.getElementById("popup").classList.remove("show");
-}
-</script>
-
-
-    renderProduk();
-</script>
+        function viewDetail(id) {
+            window.location = "detail.html?id=" + id;
+        }
+    </script>
 
 </body>
 </html>
